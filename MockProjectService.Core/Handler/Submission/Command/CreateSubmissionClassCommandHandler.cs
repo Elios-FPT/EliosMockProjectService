@@ -8,14 +8,14 @@ using static MockProjectService.Contract.UseCases.Submission.Command;
 
 namespace MockProjectService.Core.Handler.Submission.Command
 {
-    public class CreateSubmissionClassCommandHandler : ICommandHandler<CreateSubmissionClassCommand, BaseResponseDto<string>>
+    public class CreateSubmissionsClassCommandHandler : ICommandHandler<CreateSubmissionsClassCommand, BaseResponseDto<string>>
     {
-        private readonly IGenericRepository<Domain.Entities.SubmissionClass> _classRepository;
+        private readonly IGenericRepository<Domain.Entities.SubmissionsClass> _classRepository;
         private readonly IGenericRepository<Domain.Entities.Process> _processRepository;
         private readonly IGenericRepository<Domain.Entities.Submission> _submissionRepository;
 
-        public CreateSubmissionClassCommandHandler(
-            IGenericRepository<Domain.Entities.SubmissionClass> classRepository,
+        public CreateSubmissionsClassCommandHandler(
+            IGenericRepository<Domain.Entities.SubmissionsClass> classRepository,
             IGenericRepository<Domain.Entities.Process> processRepository,
             IGenericRepository<Domain.Entities.Submission> submissionRepository)
         {
@@ -24,7 +24,7 @@ namespace MockProjectService.Core.Handler.Submission.Command
             _submissionRepository = submissionRepository ?? throw new ArgumentNullException(nameof(submissionRepository));
         }
 
-        public async Task<BaseResponseDto<string>> Handle(CreateSubmissionClassCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<string>> Handle(CreateSubmissionsClassCommand request, CancellationToken cancellationToken)
         {
             if (request.ProcessId == Guid.Empty || request.SubmissionId == Guid.Empty)
             {
@@ -53,7 +53,7 @@ namespace MockProjectService.Core.Handler.Submission.Command
                 using var transaction = await _classRepository.BeginTransactionAsync();
                 try
                 {
-                    var entity = new Domain.Entities.SubmissionClass
+                    var entity = new Domain.Entities.SubmissionsClass
                     {
                         Id = Guid.NewGuid(),
                         ProcessId = request.ProcessId,

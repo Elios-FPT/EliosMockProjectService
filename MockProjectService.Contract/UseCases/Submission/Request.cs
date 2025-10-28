@@ -16,9 +16,9 @@ namespace MockProjectService.Contract.UseCases.Submission
 
         public record EvaluateRequest(string Feedback);
 
-        public record CreateSubmissionClassRequest(Guid ProcessId, Guid SubmissionId, string Code, string Status);
+        public record CreateSubmissionsClassRequest(Guid ProcessId, Guid SubmissionId, string Code, string Status);
 
-        public record UpdateSubmissionClassRequest(double? Grade, string? Assessment, string Code, string Status);
+        public record UpdateSubmissionsClassRequest(double? Grade, string? Assessment, string Code, string Status);
 
         public record SaveFeedbackRequest(string FinalAssessment);
 

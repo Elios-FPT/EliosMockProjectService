@@ -34,7 +34,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
                         (!request.UserId.HasValue || s.UserId == request.UserId.Value) &&
                         (!request.ProjectId.HasValue || s.MockProjectId == request.ProjectId.Value) &&
                         (string.IsNullOrEmpty(request.Status) || s.Status == request.Status),
-                    include: query => _queryExtensions.ApplyIncludes(query, "MockProject", "SubmissionClasses")
+                    include: query => _queryExtensions.ApplyIncludes(query, "MockProject", "SubmissionsClasses")
                 );
 
 

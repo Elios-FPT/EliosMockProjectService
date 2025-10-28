@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MockProjectService.Contract.TransferObjects
 {
-    public class SubmissionClassDto
+    public class SubmissionsClassDto
     {
         public Guid Id { get; set; }
         public Guid ProcessId { get; set; }

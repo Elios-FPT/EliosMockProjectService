@@ -9,20 +9,20 @@ using static MockProjectService.Contract.UseCases.Submission.Query;
 
 namespace MockProjectService.Core.Handler.Submission.Query
 {
-    public class GetSubmissionClassQueryHandler : IQueryHandler<GetSubmissionClassQuery, BaseResponseDto<SubmissionClassDto>>
+    public class GetSubmissionsClassQueryHandler : IQueryHandler<GetSubmissionsClassQuery, BaseResponseDto<SubmissionsClassDto>>
     {
         private readonly IGenericRepository<Domain.Entities.SubmissionsClass> _classRepository;
 
-        public GetSubmissionClassQueryHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
+        public GetSubmissionsClassQueryHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
         {
             _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
         }
 
-        public async Task<BaseResponseDto<SubmissionClassDto>> Handle(GetSubmissionClassQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<SubmissionsClassDto>> Handle(GetSubmissionsClassQuery request, CancellationToken cancellationToken)
         {
             if (request.Id == Guid.Empty)
             {
-                return new BaseResponseDto<SubmissionClassDto>
+                return new BaseResponseDto<SubmissionsClassDto>
                 {
                     Status = 400,
                     Message = "Class ID cannot be empty.",
@@ -35,7 +35,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
                 var entity = await _classRepository.GetByIdAsync(request.Id);
                 if (entity == null)
                 {
-                    return new BaseResponseDto<SubmissionClassDto>
+                    return new BaseResponseDto<SubmissionsClassDto>
                     {
                         Status = 404,
                         Message = "Submission class not found.",
@@ -43,7 +43,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
                     };
                 }
 
-                var dto = new SubmissionClassDto
+                var dto = new SubmissionsClassDto
                 {
                     Id = entity.Id,
                     ProcessId = entity.ProcessId,
@@ -54,7 +54,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
                     Assessment = entity.Assessment
                 };
 
-                return new BaseResponseDto<SubmissionClassDto>
+                return new BaseResponseDto<SubmissionsClassDto>
                 {
                     Status = 200,
                     Message = "Submission class retrieved successfully.",
@@ -63,7 +63,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto<SubmissionClassDto>
+                return new BaseResponseDto<SubmissionsClassDto>
                 {
                     Status = 500,
                     Message = $"Failed to retrieve class: {ex.Message}",

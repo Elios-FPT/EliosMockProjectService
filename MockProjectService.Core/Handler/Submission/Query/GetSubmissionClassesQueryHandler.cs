@@ -11,21 +11,21 @@ using static MockProjectService.Contract.UseCases.Submission.Query;
 
 namespace MockProjectService.Core.Handler.Submission.Query
 {
-    public class GetSubmissionClassesQueryHandler : IQueryHandler<GetSubmissionClassesQuery, BaseResponseDto<List<SubmissionClassDto>>>
+    public class GetSubmissionsClassesQueryHandler : IQueryHandler<GetSubmissionsClassesQuery, BaseResponseDto<List<SubmissionsClassDto>>>
     {
         private readonly IGenericRepository<Domain.Entities.SubmissionsClass> _classRepository;
 
-        public GetSubmissionClassesQueryHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
+        public GetSubmissionsClassesQueryHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
         {
             _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
         }
 
-        public async Task<BaseResponseDto<List<SubmissionClassDto>>> Handle(GetSubmissionClassesQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<List<SubmissionsClassDto>>> Handle(GetSubmissionsClassesQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var classes = await _classRepository.GetListAsync();
-                var dtos = classes.Select(c => new SubmissionClassDto
+                var dtos = classes.Select(c => new SubmissionsClassDto
                 {
                     Id = c.Id,
                     ProcessId = c.ProcessId,
@@ -36,7 +36,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
                     Assessment = c.Assessment
                 }).ToList();
 
-                return new BaseResponseDto<List<SubmissionClassDto>>
+                return new BaseResponseDto<List<SubmissionsClassDto>>
                 {
                     Status = 200,
                     Message = "Submission classes retrieved successfully.",
@@ -45,7 +45,7 @@ namespace MockProjectService.Core.Handler.Submission.Query
             }
             catch (Exception ex)
             {
-                return new BaseResponseDto<List<SubmissionClassDto>>
+                return new BaseResponseDto<List<SubmissionsClassDto>>
                 {
                     Status = 500,
                     Message = $"Failed to retrieve classes: {ex.Message}",

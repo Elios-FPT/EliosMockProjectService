@@ -8,16 +8,16 @@ using static MockProjectService.Contract.UseCases.Submission.Command;
 
 namespace MockProjectService.Core.Handler.Submission.Command
 {
-    public class DeleteSubmissionClassCommandHandler : ICommandHandler<DeleteSubmissionClassCommand, BaseResponseDto<bool>>
+    public class DeleteSubmissionsClassCommandHandler : ICommandHandler<DeleteSubmissionsClassCommand, BaseResponseDto<bool>>
     {
         private readonly IGenericRepository<Domain.Entities.SubmissionsClass> _classRepository;
 
-        public DeleteSubmissionClassCommandHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
+        public DeleteSubmissionsClassCommandHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
         {
             _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
         }
 
-        public async Task<BaseResponseDto<bool>> Handle(DeleteSubmissionClassCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<bool>> Handle(DeleteSubmissionsClassCommand request, CancellationToken cancellationToken)
         {
             if (request.Id == Guid.Empty)
             {

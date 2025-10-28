@@ -229,18 +229,18 @@ namespace MockProjectService.Web.Controllers
         /// </pre>
         /// </remarks>
         /// <returns>
-        /// → <seealso cref="GetSubmissionClassesQuery" /><br/>
-        /// → <seealso cref="GetSubmissionClassesQueryHandler" /><br/>
-        /// → A <see cref="BaseResponseDto{List{SubmissionClassDto}}"/> containing the list of submission classes.<br/>
+        /// → <seealso cref="GetSubmissionsClassesQuery" /><br/>
+        /// → <seealso cref="GetSubmissionsClassesQueryHandler" /><br/>
+        /// → A <see cref="BaseResponseDto{List{SubmissionsClassDto}}"/> containing the list of submission classes.<br/>
         /// </returns>
         /// <response code="200">Submission classes retrieved successfully.</response>
         /// <response code="500">An internal server error occurred.</response>
         [HttpGet("classes")]
-        [ProducesResponseType(typeof(BaseResponseDto<List<SubmissionClassDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponseDto<List<SubmissionsClassDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<List<SubmissionClassDto>>> GetSubmissionClasses()
+        public async Task<BaseResponseDto<List<SubmissionsClassDto>>> GetSubmissionsClasses()
         {
-            var query = new GetSubmissionClassesQuery();
+            var query = new GetSubmissionsClassesQuery();
             return await _sender.Send(query);
         }
 
@@ -256,20 +256,20 @@ namespace MockProjectService.Web.Controllers
         /// </remarks>
         /// <param name="id">The ID of the submission class.</param>
         /// <returns>
-        /// → <seealso cref="GetSubmissionClassQuery" /><br/>
-        /// → <seealso cref="GetSubmissionClassQueryHandler" /><br/>
-        /// → A <see cref="BaseResponseDto{SubmissionClassDto}"/> containing the submission class details.<br/>
+        /// → <seealso cref="GetSubmissionsClassQuery" /><br/>
+        /// → <seealso cref="GetSubmissionsClassQueryHandler" /><br/>
+        /// → A <see cref="BaseResponseDto{SubmissionsClassDto}"/> containing the submission class details.<br/>
         /// </returns>
         /// <response code="200">Submission class retrieved successfully.</response>
         /// <response code="404">The specified submission class was not found.</response>
         /// <response code="500">An internal server error occurred.</response>
         [HttpGet("classes/{id}")]
-        [ProducesResponseType(typeof(BaseResponseDto<SubmissionClassDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponseDto<SubmissionsClassDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<SubmissionClassDto>> GetSubmissionClass([FromRoute] Guid id)
+        public async Task<BaseResponseDto<SubmissionsClassDto>> GetSubmissionsClass([FromRoute] Guid id)
         {
-            var query = new GetSubmissionClassQuery(Id: id);
+            var query = new GetSubmissionsClassQuery(Id: id);
             return await _sender.Send(query);
         }
 
@@ -283,10 +283,10 @@ namespace MockProjectService.Web.Controllers
         /// If the request is invalid, a 400 Bad Request response will be returned.
         /// </pre>
         /// </remarks>
-        /// <param name="request">A <see cref="CreateSubmissionClassRequest"/> object containing the submission class details.</param>
+        /// <param name="request">A <see cref="CreateSubmissionsClassRequest"/> object containing the submission class details.</param>
         /// <returns>
-        /// → <seealso cref="CreateSubmissionClassCommand" /><br/>
-        /// → <seealso cref="CreateSubmissionClassCommandHandler" /><br/>
+        /// → <seealso cref="CreateSubmissionsClassCommand" /><br/>
+        /// → <seealso cref="CreateSubmissionsClassCommandHandler" /><br/>
         /// → A <see cref="BaseResponseDto{string}"/> containing the ID of the created submission class.<br/>
         /// </returns>
         /// <response code="200">Submission class created successfully.</response>
@@ -296,9 +296,9 @@ namespace MockProjectService.Web.Controllers
         [ProducesResponseType(typeof(BaseResponseDto<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<string>> CreateSubmissionClass([FromBody, Required] CreateSubmissionClassRequest request)
+        public async Task<BaseResponseDto<string>> CreateSubmissionsClass([FromBody, Required] CreateSubmissionsClassRequest request)
         {
-            var command = new CreateSubmissionClassCommand(
+            var command = new CreateSubmissionsClassCommand(
                 ProcessId: request.ProcessId,
                 SubmissionId: request.SubmissionId,
                 Code: request.Code,
@@ -319,10 +319,10 @@ namespace MockProjectService.Web.Controllers
         /// </pre>
         /// </remarks>
         /// <param name="id">The ID of the submission class to update.</param>
-        /// <param name="request">A <see cref="UpdateSubmissionClassRequest"/> object containing the updated submission class details.</param>
+        /// <param name="request">A <see cref="UpdateSubmissionsClassRequest"/> object containing the updated submission class details.</param>
         /// <returns>
-        /// → <seealso cref="UpdateSubmissionClassCommand" /><br/>
-        /// → <seealso cref="UpdateSubmissionClassCommandHandler" /><br/>
+        /// → <seealso cref="UpdateSubmissionsClassCommand" /><br/>
+        /// → <seealso cref="UpdateSubmissionsClassCommandHandler" /><br/>
         /// → A <see cref="BaseResponseDto{bool}"/> indicating whether the update was successful.<br/>
         /// </returns>
         /// <response code="200">Submission class updated successfully.</response>
@@ -334,9 +334,9 @@ namespace MockProjectService.Web.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<bool>> UpdateSubmissionClass([FromRoute] Guid id, [FromBody, Required] UpdateSubmissionClassRequest request)
+        public async Task<BaseResponseDto<bool>> UpdateSubmissionsClass([FromRoute] Guid id, [FromBody, Required] UpdateSubmissionsClassRequest request)
         {
-            var command = new UpdateSubmissionClassCommand(
+            var command = new UpdateSubmissionsClassCommand(
                 Id: id,
                 Grade: request.Grade,
                 Assessment: request.Assessment,
@@ -359,8 +359,8 @@ namespace MockProjectService.Web.Controllers
         /// </remarks>
         /// <param name="id">The ID of the submission class to delete.</param>
         /// <returns>
-        /// → <seealso cref="DeleteSubmissionClassCommand" /><br/>
-        /// → <seealso cref="DeleteSubmissionClassCommandHandler" /><br/>
+        /// → <seealso cref="DeleteSubmissionsClassCommand" /><br/>
+        /// → <seealso cref="DeleteSubmissionsClassCommandHandler" /><br/>
         /// → A <see cref="BaseResponseDto{bool}"/> indicating whether the deletion was successful.<br/>
         /// </returns>
         /// <response code="200">Submission class deleted successfully.</response>
@@ -370,9 +370,9 @@ namespace MockProjectService.Web.Controllers
         [ProducesResponseType(typeof(BaseResponseDto<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<bool>> DeleteSubmissionClass([FromRoute] Guid id)
+        public async Task<BaseResponseDto<bool>> DeleteSubmissionsClass([FromRoute] Guid id)
         {
-            var command = new DeleteSubmissionClassCommand(Id: id);
+            var command = new DeleteSubmissionsClassCommand(Id: id);
             return await _sender.Send(command);
         }
 

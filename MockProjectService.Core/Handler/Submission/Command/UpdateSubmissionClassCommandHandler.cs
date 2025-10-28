@@ -8,16 +8,16 @@ using static MockProjectService.Contract.UseCases.Submission.Command;
 
 namespace MockProjectService.Core.Handler.Submission.Command
 {
-    public class UpdateSubmissionClassCommandHandler : ICommandHandler<UpdateSubmissionClassCommand, BaseResponseDto<bool>>
+    public class UpdateSubmissionsClassCommandHandler : ICommandHandler<UpdateSubmissionsClassCommand, BaseResponseDto<bool>>
     {
         private readonly IGenericRepository<Domain.Entities.SubmissionsClass> _classRepository;
 
-        public UpdateSubmissionClassCommandHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
+        public UpdateSubmissionsClassCommandHandler(IGenericRepository<Domain.Entities.SubmissionsClass> classRepository)
         {
             _classRepository = classRepository ?? throw new ArgumentNullException(nameof(classRepository));
         }
 
-        public async Task<BaseResponseDto<bool>> Handle(UpdateSubmissionClassCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<bool>> Handle(UpdateSubmissionsClassCommand request, CancellationToken cancellationToken)
         {
             if (request.Id == Guid.Empty)
             {
