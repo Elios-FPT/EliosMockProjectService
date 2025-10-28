@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  sutility:
+    build:
+      context: ./MockProjectService.Web
+      dockerfile: Dockerfile
+    container_name: sutility-app
+    ports:
+      - "7074:80"
+      - "7103:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/cert/certificate.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=123456
+      - Cache__RedisConnectionString=sutility-redis:6379
+    volumes:
+      - ./MockProjectService.Web/cert:/app/cert:ro
+    restart: unless-stopped
+    depends_on:
+      - redis
+    networks:
+      - sutility-network
+  redis:
+    image: redis:7
+    container_name: sutility-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sutility-network
+
+networks:
+  sutility-network:
+    driver: bridge
+volumes:
+  redis_data:
