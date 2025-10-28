@@ -56,42 +56,6 @@ namespace MockProjectService.Web.Controllers
         }
 
         /// <summary>
-        /// Creates a new process.
-        /// </summary>
-        /// <remarks>
-        /// <pre>
-        /// Description:
-        /// This endpoint creates a new process for a mock project.
-        /// If the request is invalid or the mock project is not found, appropriate error responses will be returned.
-        /// </pre>
-        /// </remarks>
-        /// <param name="request">A <see cref="DirectAddProcessRequest"/> object containing the process details.</param>
-        /// <returns>
-        /// → <seealso cref="AddProcessCommand" /><br/>
-        /// → <seealso cref="AddProcessCommandHandler" /><br/>
-        /// → A <see cref="BaseResponseDto{string}"/> containing the ID of the created process.<br/>
-        /// </returns>
-        /// <response code="200">Process created successfully.</response>
-        /// <response code="400">The request is invalid (e.g., missing or invalid fields).</response>
-        /// <response code="404">The specified mock project was not found.</response>
-        /// <response code="500">An internal server error occurred.</response>
-        [HttpPost]
-        [ProducesResponseType(typeof(BaseResponseDto<string>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<BaseResponseDto<string>> CreateProcess([FromBody, Required] DirectAddProcessRequest request)
-        {
-            var command = new AddProcessCommand(
-                ProjectId: request.ProjectId,
-                StepGuiding: request.StepGuiding,
-                BaseClassCode: request.BaseClassCode
-            );
-
-            return await _sender.Send(command);
-        }
-
-        /// <summary>
         /// Updates a process.
         /// </summary>
         /// <remarks>

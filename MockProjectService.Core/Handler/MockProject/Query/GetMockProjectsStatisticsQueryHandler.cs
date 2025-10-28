@@ -15,16 +15,17 @@ namespace MockProjectService.Core.Handler.MockProject.Query
     {
         private readonly IGenericRepository<Domain.Entities.MockProject> _projectRepository;
         private readonly IQueryExtensions<Domain.Entities.MockProject> _queryExtensions;
-        public GetMockProjectsStatisticsQueryHandler(IGenericRepository<Domain.Entities.MockProject> projectRepository)
+        public GetMockProjectsStatisticsQueryHandler(IGenericRepository<Domain.Entities.MockProject> projectRepository, IQueryExtensions<Domain.Entities.MockProject> queryExtensions)
         {
             _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
+            _queryExtensions = queryExtensions ?? throw new ArgumentNullException(nameof(queryExtensions));
         }
 
         public async Task<BaseResponseDto<MockProjectStatisticsDto>> Handle(GetMockProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var projects = await _projectRepository.GetListAsync(include: p => _queryExtensions.ApplyIncludes(p, "Submissions"));
+                var projects = await _projectRepository.GetListAsync(include: p => _queryExtensions.ApplyIncludes(p, "Submissions", "Processes"));
 
                 var totalProjects = projects.Count();
                 var totalSubmissions = projects.Sum(p => p.Submissions?.Count ?? 0);

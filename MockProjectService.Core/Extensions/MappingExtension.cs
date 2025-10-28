@@ -41,5 +41,19 @@ namespace MockProjectService.Core.Extensions
             };
             return dto;
         }
+
+        public static SubmissionDto ToDto(this Submission submission)
+        {
+            var dto = new SubmissionDto
+            {
+                Id = submission.Id,
+                MockProjectId = submission.MockProjectId,
+                FinalAssessment = submission.FinalAssessment,
+                FinalGrade = submission.FinalGrade,
+                Status = submission.Status,
+                UserId = submission.UserId
+            };
+            return dto;
+        }
     }
 }
