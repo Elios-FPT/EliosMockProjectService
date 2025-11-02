@@ -12,7 +12,7 @@ namespace MockProjectService.Contract.TransferObjects
         public int TotalUsers { get; set; }
         public double? AverageFinalGrade { get; set; }
         public Dictionary<string, int> StatusCounts { get; set; }
-        public Dictionary<int, int> SubmissionsPerProject { get; set; }
+        public Dictionary<Guid, int> SubmissionsPerProject { get; set; }
         public double? HighestFinalGrade { get; set; }
         public double? LowestFinalGrade { get; set; }
         public int TotalPending { get;set; }

@@ -16,7 +16,7 @@ namespace MockProjectService.Web.Controllers
     [ApiVersion(1)]
     [Produces("application/json")]
     [ControllerName("Processes")]
-    [Route("api/v1/[controller]")]
+    [Route("api/mockproject/processes")]
     public class ProcessController : ControllerBase
     {
         private readonly ISender _sender;
@@ -85,6 +85,7 @@ namespace MockProjectService.Web.Controllers
         {
             var command = new UpdateProcessCommand(
                 ProcessId: id,
+                StepNumber: request.StepNumber,
                 StepGuiding: request.StepGuiding,
                 BaseClassCode: request.BaseClassCode
             );

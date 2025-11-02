@@ -40,6 +40,12 @@ namespace MockProjectService.Core.Handler.Submission.Query
 
                 var dtos = submissions.Select(s => new SubmissionDto
                 {
+                    UserId = s.UserId,
+                    FinalAssessment = s.FinalAssessment,
+                    FinalGrade = s.FinalGrade,
+                    Id = s.Id,
+                    MockProjectId = s.MockProjectId,
+                    Status = s.Status
                 }).ToList();
 
                 return new BaseResponseDto<List<SubmissionDto>>

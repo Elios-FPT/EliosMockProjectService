@@ -52,7 +52,7 @@ namespace MockProjectService.Core.Handler.Submission.Command
                     var submission = new Domain.Entities.Submission
                     {
                         Id = Guid.NewGuid(),
-                        UserId = Guid.Empty,
+                        UserId = request.UserId,
                         MockProjectId = request.ProjectId,
                         Status = "Pending",
                         FinalAssessment = ""

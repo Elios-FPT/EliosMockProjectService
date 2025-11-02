@@ -59,7 +59,8 @@ namespace MockProjectService.Core.Handler.Submission.Command
                         ProcessId = request.ProcessId,
                         SubmissionId = request.SubmissionId,
                         Code = request.Code,
-                        Status = request.Status
+                        Status = request.Status,
+                        Assessment = ""
                     };
 
                     await _classRepository.AddAsync(entity);

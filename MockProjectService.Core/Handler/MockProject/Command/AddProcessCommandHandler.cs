@@ -63,6 +63,7 @@ namespace MockProjectService.Core.Handler.MockProject.Command
                     {
                         Id = Guid.NewGuid(),
                         MockProjectId = request.ProjectId,
+                        StepNumber = request.StepNumber,
                         StepGuiding = request.StepGuiding,
                         BaseClassCode = request.BaseClassCode
                     };

@@ -10,7 +10,7 @@ namespace MockProjectService.Contract.UseCases.Submission
 {
     public static class Command
     {
-        public record CreateSubmissionCommand(Guid ProjectId) : ICommand<BaseResponseDto<string>>;
+        public record CreateSubmissionCommand(Guid UserId, Guid ProjectId) : ICommand<BaseResponseDto<string>>;
 
         public record UpdateSubmissionCommand(Guid SubmissionId, string Status, double? Grade, string? FinalAssessment) : ICommand<BaseResponseDto<bool>>;
 

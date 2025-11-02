@@ -12,5 +12,6 @@ namespace MockProjectService.Contract.TransferObjects
         public Guid MockProjectId { get; set; }
         public string BaseClassCode { get; set; }
         public string StepGuiding { get; set; }
+        public int StepNumber { get; set; }
     }
 }

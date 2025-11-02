@@ -47,6 +47,7 @@ namespace MockProjectService.Core.Handler.Process.Query
                 {
                     Id = process.Id,
                     MockProjectId = process.MockProjectId,
+                    StepNumber = process.StepNumber,
                     StepGuiding = process.StepGuiding,
                     BaseClassCode = process.BaseClassCode,
                 };

@@ -55,6 +55,7 @@ namespace MockProjectService.Core.Handler.Process.Command
                 using var transaction = await _processRepository.BeginTransactionAsync();
                 try
                 {
+                    process.StepNumber = request.StepNumber;
                     process.StepGuiding = request.StepGuiding;
                     process.BaseClassCode = request.BaseClassCode;
 

@@ -12,7 +12,7 @@ namespace MockProjectService.Contract.UseCases.MockProject
 
         public record DeleteMockProjectCommand(Guid ProjectId) : ICommand<BaseResponseDto<bool>>;
 
-        public record AddProcessCommand(Guid ProjectId, string StepGuiding, string? BaseClassCode) : ICommand<BaseResponseDto<string>>;
+        public record AddProcessCommand(Guid ProjectId, int StepNumber, string StepGuiding, string? BaseClassCode) : ICommand<BaseResponseDto<string>>;
 
         public record AutoEvaluateCommand(Guid ProjectId, Guid SubmissionId) : ICommand<BaseResponseDto<bool>>;
     }

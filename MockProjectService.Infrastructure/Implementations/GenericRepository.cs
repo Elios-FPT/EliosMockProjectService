@@ -206,7 +206,6 @@ namespace MockProjectService.Infrastructure.Implementations
 
         public async Task<IUnitOfWork> BeginTransactionAsync()
         {
-            var transaction = await _context.Database.BeginTransactionAsync();
             return new EfUnitOfWork(_context);
         }
     }

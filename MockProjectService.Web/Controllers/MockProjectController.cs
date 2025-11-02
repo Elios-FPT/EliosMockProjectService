@@ -16,7 +16,7 @@ namespace MockProjectService.Web.Controllers
     [ApiVersion(1)]
     [Produces("application/json")]
     [ControllerName("MockProjects")]
-    [Route("api/v1/[controller]")]
+    [Route("api/mockproject/mock-projects")]
     public class MockProjectController : ControllerBase
     {
         private readonly ISender _sender;
@@ -257,6 +257,7 @@ namespace MockProjectService.Web.Controllers
         {
             var command = new AddProcessCommand(
                 ProjectId: id,
+                StepNumber: request.StepNumber,
                 StepGuiding: request.StepGuiding,
                 BaseClassCode: request.BaseClassCode
             );

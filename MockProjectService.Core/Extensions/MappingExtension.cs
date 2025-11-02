@@ -37,6 +37,7 @@ namespace MockProjectService.Core.Extensions
                 Id = process.Id,
                 BaseClassCode = process.BaseClassCode,
                 MockProjectId = process.MockProjectId,
+                StepNumber = process.StepNumber,
                 StepGuiding = process.StepGuiding
             };
             return dto;

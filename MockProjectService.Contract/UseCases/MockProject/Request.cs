@@ -10,7 +10,9 @@ namespace MockProjectService.Contract.UseCases.MockProject
 
         public record UpdateMockProjectRequest(string Title, string Language, string? Description, string Difficulty, string? FileName, string KeyPrefix, string? BaseProjectUrl);
 
-        public record AddProcessRequest(string StepGuiding, string? BaseClassCode);
+        public record AddProcessRequest(int StepNumber, string StepGuiding, string? BaseClassCode);
+
+        public record GetMockProjectsStatisticsRequest(Guid? UserId, Guid? ProjectId);
 
         public record AutoEvaluateRequest(Guid ProjectId, Guid SubmissionId);
     }

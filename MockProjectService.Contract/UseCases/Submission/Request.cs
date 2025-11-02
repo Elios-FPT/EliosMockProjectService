@@ -10,6 +10,8 @@ namespace MockProjectService.Contract.UseCases.Submission
     {
         public record GetSubmissionsRequest(Guid? UserId, Guid? ProjectId, string? Status);
 
+        public record GetCurrentUserSubmissionsRequest(Guid? ProjectId, string? Status);
+
         public record CreateSubmissionRequest(Guid ProjectId);
 
         public record UpdateSubmissionRequest(string Status, double? Grade, string? FinalAssessment);
@@ -23,5 +25,7 @@ namespace MockProjectService.Contract.UseCases.Submission
         public record SaveFeedbackRequest(string FinalAssessment);
 
         public record GetSubmissionsStatisticsRequest(Guid? UserId, string? Status);
+
+        public record GetCurrentUserSubmissionsStatisticsRequest(string? Status);
     }
 }

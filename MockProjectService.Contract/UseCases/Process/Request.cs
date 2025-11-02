@@ -6,6 +6,6 @@ namespace MockProjectService.Contract.UseCases.Process
     {
         public record DirectAddProcessRequest(Guid ProjectId, string StepGuiding, string? BaseClassCode);
 
-        public record UpdateProcessRequest(string StepGuiding, string? BaseClassCode);
+        public record UpdateProcessRequest(int StepNumber, string StepGuiding, string? BaseClassCode);
     }
 }

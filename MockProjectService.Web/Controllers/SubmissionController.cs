@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MockProjectService.Contract.Shared;
 using MockProjectService.Contract.TransferObjects;
+using MockProjectService.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using static MockProjectService.Contract.UseCases.Submission.Command;
 using static MockProjectService.Contract.UseCases.Submission.Query;
@@ -16,7 +17,7 @@ namespace MockProjectService.Web.Controllers
     [ApiVersion(1)]
     [Produces("application/json")]
     [ControllerName("Submissions")]
-    [Route("api/v1/[controller]")]
+    [Route("api/mockproject/submissions")]
     public class SubmissionController : ControllerBase
     {
         private readonly ISender _sender;
@@ -53,6 +54,42 @@ namespace MockProjectService.Web.Controllers
         {
             var query = new GetSubmissionsQuery(
                 UserId: request.UserId,
+                ProjectId: request.ProjectId,
+                Status: request.Status
+            );
+
+            return await _sender.Send(query);
+        }
+
+        /// <summary>
+        /// Retrieves a list of submissions with filters for current user.
+        /// </summary>
+        /// <remarks>
+        /// <pre>
+        /// Description:
+        /// This endpoint retrieves a list of submissions filtered by user ID, project ID, or status.
+        /// If the request is invalid, a 400 Bad Request response will be returned.
+        /// </pre>
+        /// </remarks>
+        /// <param name="request">A <see cref="GetSubmissionsRequest"/> object containing filter parameters.</param>
+        /// <returns>
+        /// → <seealso cref="GetSubmissionsQuery" /><br/>
+        /// → <seealso cref="GetSubmissionsQueryHandler" /><br/>
+        /// → A <see cref="BaseResponseDto{List{SubmissionDto}}"/> containing the list of submissions.<br/>
+        /// </returns>
+        /// <response code="200">Submissions retrieved successfully.</response>
+        /// <response code="400">The request is invalid (e.g., invalid filter parameters).</response>
+        /// <response code="500">An internal server error occurred.</response>
+        [HttpGet("current")]
+        [ProducesResponseType(typeof(BaseResponseDto<List<SubmissionDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<BaseResponseDto<List<SubmissionDto>>> GetCurrentUserSubmissions([FromQuery] GetCurrentUserSubmissionsRequest request)
+        {
+            var userIdHeader = HttpContext.Request.Headers["X-Auth-Request-User"].FirstOrDefault();
+
+            var query = new GetSubmissionsQuery(
+                UserId: Guid.Parse(userIdHeader),
                 ProjectId: request.ProjectId,
                 Status: request.Status
             );
@@ -114,7 +151,9 @@ namespace MockProjectService.Web.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<BaseResponseDto<string>> CreateSubmission([FromBody, Required] CreateSubmissionRequest request)
         {
-            var command = new CreateSubmissionCommand(ProjectId: request.ProjectId);
+            var userIdHeader = HttpContext.Request.Headers["X-Auth-Request-User"].FirstOrDefault();
+
+            var command = new CreateSubmissionCommand(UserId: Guid.Parse(userIdHeader), ProjectId: request.ProjectId);
             return await _sender.Send(command);
         }
 
@@ -241,6 +280,29 @@ namespace MockProjectService.Web.Controllers
         public async Task<BaseResponseDto<List<SubmissionsClassDto>>> GetSubmissionsClasses()
         {
             var query = new GetSubmissionsClassesQuery();
+            return await _sender.Send(query);
+        }
+
+        /// <summary>
+        /// Retrieves all submission classes for a specific submission.
+        /// </summary>
+        /// <param name="submissionId">The unique identifier of the submission.</param>
+        /// <remarks>
+        /// Returns a list of submission classes associated with the specified submission ID.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="BaseResponseDto{List{SubmissionsClassDto}}"/> containing submission classes related to the given submission.
+        /// </returns>
+        /// <response code="200">Successfully retrieved submission classes for the specified submission.</response>
+        /// <response code="404">Submission not found.</response>
+        /// <response code="500">An internal server error occurred.</response>
+        [HttpGet("{submissionId}/classes")]
+        [ProducesResponseType(typeof(BaseResponseDto<List<SubmissionsClassDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<BaseResponseDto<List<SubmissionsClassDto>>> GetSubmissionClassesBySubmissionId(Guid submissionId)
+        {
+            var query = new GetSubmissionsClasseaBySubmissionQuery(submissionId);
             return await _sender.Send(query);
         }
 
@@ -461,6 +523,38 @@ namespace MockProjectService.Web.Controllers
         {
             var query = new GetSubmissionsStatisticsQuery(
                 UserId: request.UserId,
+                Status: request.Status
+            );
+
+            return await _sender.Send(query);
+        }
+
+        /// <summary>
+        /// Retrieves statistics for submissions for current user.
+        /// </summary>
+        /// <remarks>
+        /// <pre>
+        /// Description:
+        /// This endpoint retrieves aggregated statistics for submissions, filtered by user ID or status.
+        /// </pre>
+        /// </remarks>
+        /// <param name="request">A <see cref="GetSubmissionsStatisticsRequest"/> object containing filter parameters.</param>
+        /// <returns>
+        /// → <seealso cref="GetSubmissionsStatisticsQuery" /><br/>
+        /// → <seealso cref="GetSubmissionsStatisticsQueryHandler" /><br/>
+        /// → A <see cref="BaseResponseDto{SubmissionStatisticsDto}"/> containing the statistics.<br/>
+        /// </returns>
+        /// <response code="200">Statistics retrieved successfully.</response>
+        /// <response code="500">An internal server error occurred.</response>
+        [HttpGet("statistics/current")]
+        [ProducesResponseType(typeof(BaseResponseDto<SubmissionStatisticsDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<BaseResponseDto<SubmissionStatisticsDto>> GetCurrentUserSubmissionsStatistics([FromQuery] GetCurrentUserSubmissionsStatisticsRequest request)
+        {
+            var userIdHeader = HttpContext.Request.Headers["X-Auth-Request-User"].FirstOrDefault();
+
+            var query = new GetSubmissionsStatisticsQuery(
+                UserId: Guid.Parse(userIdHeader),
                 Status: request.Status
             );
 

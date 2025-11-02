@@ -12,7 +12,7 @@ namespace MockProjectService.Contract.UseCases.Process
     {
         public record AddProcessCommand(Guid ProjectId, string StepGuiding, string? BaseClassCode) : ICommand<BaseResponseDto<string>>;
 
-        public record UpdateProcessCommand(Guid ProcessId, string StepGuiding, string? BaseClassCode) : ICommand<BaseResponseDto<bool>>;
+        public record UpdateProcessCommand(Guid ProcessId, int StepNumber, string StepGuiding, string? BaseClassCode) : ICommand<BaseResponseDto<bool>>;
 
         public record DeleteProcessCommand(Guid ProcessId) : ICommand<BaseResponseDto<bool>>;
     }

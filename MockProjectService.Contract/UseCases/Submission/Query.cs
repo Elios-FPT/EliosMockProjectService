@@ -17,6 +17,8 @@ namespace MockProjectService.Contract.UseCases.Submission
 
         public record GetSubmissionsClassesQuery : IQuery<BaseResponseDto<List<SubmissionsClassDto>>>;
 
+        public record GetSubmissionsClasseaBySubmissionQuery(Guid? SubmissionId) : IQuery<BaseResponseDto<List<SubmissionsClassDto>>>;
+
         public record GetSubmissionsClassQuery(Guid Id) : IQuery<BaseResponseDto<SubmissionsClassDto>>;
 
         public record GetSubmissionScoreQuery(Guid SubmissionId) : IQuery<BaseResponseDto<double?>>;
