@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using MockProjectService.Contract.Shared;
 using MockProjectService.Contract.TransferObjects;
+using MockProjectService.Contract.UseCases.MockProject;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using static MockProjectService.Contract.UseCases.MockProject.Command;
 using static MockProjectService.Contract.UseCases.MockProject.Query;
 using static MockProjectService.Contract.UseCases.MockProject.Request;
@@ -20,10 +23,12 @@ namespace MockProjectService.Web.Controllers
     public class MockProjectController : ControllerBase
     {
         private readonly ISender _sender;
+        private readonly IConfiguration _configuration;
 
-        public MockProjectController(ISender sender)
+        public MockProjectController(ISender sender, IConfiguration configuration)
         {
             _sender = sender;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -351,5 +356,113 @@ namespace MockProjectService.Web.Controllers
             var command = new AutoEvaluateCommand(ProjectId: id, SubmissionId: request.SubmissionId);
             return await _sender.Send(command);
         }
+
+        /// <summary>
+        /// Uploads a .zip file for a mock project and returns the public URL.
+        /// </summary>
+        /// <remarks>
+        /// <pre>
+        /// Description:
+        /// This endpoint allows uploading a .zip file associated with a mock project.
+        /// The file will be stored in the configured storage (e.g., AWS S3, Azure Blob, local disk),
+        /// and a publicly accessible URL will be returned.
+        /// 
+        /// Requirements:
+        /// - File must be a valid .zip
+        /// - Max size: 50MB (configurable)
+        /// - Only one .zip per project (overwrites previous)
+        /// </pre>
+        /// </remarks>
+        /// <param name="id">The ID of the mock project.</param>
+        /// <param name="file">The .zip file to upload.</param>
+        /// <returns>
+        /// → <seealso cref="UploadProjectZipCommand" /><br/>
+        /// → <seealso cref="UploadProjectZipCommandHandler" /><br/>
+        /// → A <see cref="BaseResponseDto{string}"/> containing the public URL of the uploaded file.<br/>
+        /// </returns>
+        /// <response code="200">File uploaded successfully. Returns public URL.</response>
+        /// <response code="400">Invalid file (not .zip, too large, etc.).</response>
+        /// <response code="404">Mock project not found.</response>
+        /// <response code="500">Internal server error (storage failure, etc.).</response>
+        [HttpPost("upload-zip")]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(typeof(BaseResponseDto<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<BaseResponseDto<string>> UploadProjectZip(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return new BaseResponseDto<string>
+                {
+                    Status = 400,
+                    ResponseData = null,
+                    Message = "No file uploaded."
+                };
+
+            if (Path.GetExtension(file.FileName).ToLower() != ".zip")
+                return new BaseResponseDto<string>
+                {
+                    Status = 400,
+                    ResponseData = null,
+                    Message = "Only .zip files are allowed."
+                };
+
+            if (file.Length > 50 * 1024 * 1024)
+                return new BaseResponseDto<string>
+                {
+                    Status = 400,
+                    ResponseData = null,
+                    Message = "File size exceeds 50MB limit."
+                };
+
+            var client = new HttpClient();
+
+            string keyPrefix = $"mockproject";
+
+            string originalName = Path.GetFileNameWithoutExtension(file.FileName);
+            string fileName = originalName + "." + Guid.NewGuid().ToString();
+
+            string extension = Path.GetExtension(file.FileName);
+
+            string baseUtility = _configuration["Utility:baseUtilityUrl"];
+
+            var url = $"{baseUtility}/api/v1/Storage?KeyPrefix={keyPrefix}&FileName={fileName}";
+
+            using var form = new MultipartFormDataContent();
+
+            using (var stream = file.OpenReadStream())
+            {
+                var fileContent = new StreamContent(stream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+
+                form.Add(fileContent, "file", fileName);
+
+                var response = await client.PostAsync(url, form);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new BaseResponseDto<string>
+                    {
+                        Status = 400,
+                        ResponseData = null,
+                        Message = $"Upload failed: {response.StatusCode}"
+                    };
+                }
+
+                var data = await response.Content.ReadAsStringAsync();
+
+                using var doc = JsonDocument.Parse(data);
+                string urlOnly = doc.RootElement.GetProperty("responseData").GetString();
+
+                return new BaseResponseDto<string>
+                {
+                    Status = 200,
+                    ResponseData = urlOnly + extension,
+                    Message = "Upload successful"
+                };
+            }
+        }
+
     }
 }
