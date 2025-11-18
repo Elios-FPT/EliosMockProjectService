@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MockProjectService.Contract.Shared;
 using MockProjectService.Contract.TransferObjects;
 using MockProjectService.Contract.UseCases.MockProject;
+using MockProjectService.Web.Attributes;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -114,6 +115,7 @@ namespace MockProjectService.Web.Controllers
         /// <response code="400">The request is invalid (e.g., missing or invalid fields).</response>
         /// <response code="500">An internal server error occurred.</response>
         [HttpPost]
+        [ServiceAuthorize("Resource Manager")]
         [ProducesResponseType(typeof(BaseResponseDto<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
