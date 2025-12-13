@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36327.8
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockProjectService.Core", "MockProjectService.Core\MockProjectService.Core.csproj", "{CE41CC83-A93A-4081-A337-3B240C9E73CF}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockProjectService.Contract", "MockProjectService.Contract\MockProjectService.Contract.csproj", "{BCC6619F-5D30-42DD-9188-A980729C50E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockProjectService.Web", "MockProjectService.Web\MockProjectService.Web.csproj", "{3B5B5A8D-0F92-66CD-9A13-BCF567147D4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockProjectService.Test", "MockProjectService.Test\MockProjectService.Test.csproj", "{DC878B16-BD41-4041-B465-D51F99ABC904}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{3B5B5A8D-0F92-66CD-9A13-BCF567147D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B5B5A8D-0F92-66CD-9A13-BCF567147D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B5B5A8D-0F92-66CD-9A13-BCF567147D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC878B16-BD41-4041-B465-D51F99ABC904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC878B16-BD41-4041-B465-D51F99ABC904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC878B16-BD41-4041-B465-D51F99ABC904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC878B16-BD41-4041-B465-D51F99ABC904}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
